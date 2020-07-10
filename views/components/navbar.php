@@ -1,8 +1,22 @@
 <?php 
-    if (isset($_GET['page']) && $_GET['page'] == "password") {
+    require_once 'controllers/clienteController.php';
+
+    $cliente = new ClientesController();
+
+    if (isset($_POST['email-login']) && isset($_POST['password-login'])) {
+        $login = $cliente->login_cliente($_POST['email-login'], $_POST['password-login']);
+
+        echo '<script>window.location.href = "index.php?page=catalogo"</script>';
+    }
+
+    if (isset($_GET['page']) && ($_GET['page'] == "password" || $_GET['page'] == "carrito")) {
         $carrito = False;
     } else {
-        $carrito = True;
+        if (!isset($_SESSION['nombres'])) {
+            $carrito = False;
+        } else {
+            $carrito = True;
+        }
     }
 ?>
 <div class="header-bg">
@@ -13,7 +27,7 @@
 
                 <!-- Logo container-->
                 <div class="logo">
-                    <a href="index.html" class="logo">
+                    <a href="index.php" class="logo">
                         <img src="static/images/zs-small.png" alt="" class="logo-small">
                         <img src="static/images/zoo-shop-logo.png" alt="" class="logo-large">
                     </a>
@@ -34,7 +48,7 @@
                         </li>
 
                         <li class="dropdown notification-list list-inline-item">
-                        	<?php if (2 == 3) { ?>
+                        	<?php if (isset($_SESSION['nombres'])) { ?>
 	                            <div class="dropdown notification-list nav-pro-img">
 	                                <a class="dropdown-toggle nav-link arrow-none nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
 	                                    <img src="static/images/users/user-4.jpg" alt="user" class="rounded-circle">
@@ -42,7 +56,7 @@
 	                                <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
 	                                    <!-- item-->
 	                                    <a class="dropdown-item" href="?page=perfil"><i class="mdi mdi-account-circle"></i> Mi Perfil</a>
-	                                    <a class="dropdown-item text-danger" href="#"><i class="mdi mdi-power text-danger"></i>Cerrar sesión</a>
+	                                    <a id="logout" class="dropdown-item text-danger" style="cursor: pointer;"><i class="mdi mdi-power text-danger"></i>Cerrar sesión</a>
 	                                </div>
 	                            </div>
                         	<?php } else { ?>
@@ -96,9 +110,11 @@
                             <a href="?page=catalogo"><i class="ion ion-md-basket"></i>Productos</a>
                         </li>
 
-                        <li class="has-submenu">
-                            <a href="?page=pedidos"><i class="fas fa-shipping-fast"></i>Mis pedidos</a>
-                        </li>
+                        <?php if ($carrito === true) { ?>
+                            <li class="has-submenu">
+                                <a href="?page=pedidos"><i class="fas fa-shipping-fast"></i>Mis pedidos</a>
+                            </li>
+                        <?php } ?>
 
                         <li class="has-submenu">
                             <a href="#"><i class="ion ion-md-contact"></i>Contacto</a>
@@ -159,9 +175,6 @@
                                         <a href="index.php" class="btn btn-info btn-icon">
                                             <span class="btn-icon-label"><i class="fas fa-arrow-left mr-2"></i></span> Regresar
                                         </a>
-                                        <a href="#" class="btn btn-warning btn-icon">
-                                            <span class="btn-icon-label"><i class="fas fa-pencil-alt mr-2"></i></span> Editar perfil
-                                        </a>
                                     <?php 
                                         } else { 
                                             if ($carrito === True) {
@@ -197,13 +210,13 @@
                     <div class="form-group row">
                         <label for="email" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
-                            <input class="form-control" type="email" placeholder="example@server.com" id="email">
+                            <input class="form-control" type="email" placeholder="example@server.com" id="email-login" name="email-login" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="password" class="col-sm-2 col-form-label">Contraseña</label>
                         <div class="col-sm-10">
-                            <input class="form-control" type="password" id="password">
+                            <input class="form-control" type="password" id="password-login" name="password-login" required>
                         </div>
                     </div>
                     <div class="form-group text-center">
