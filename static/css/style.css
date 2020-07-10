@@ -3666,4 +3666,23 @@ Invoice
   background-position: bottom;
 }
 
+.img-product-detail {
+    width: auto;
+    height: 503px;
+}
+
+.img-container-product {
+  border: 1px #F79404 solid;
+  border-radius: 1em;
+  background: #d5d5d5;
+}
+
+.img-product-thumbail {
+  width: 234px;
+  height: 298px;
+}
+
+#add_cart {
+  cursor: pointer;
+}
 /*# sourceMappingURL=style.css.map */
