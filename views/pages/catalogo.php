@@ -12,18 +12,20 @@
                     <div class="card product-box">
                         <div class="card-body">
                             <div class="product-img">
-                                <img src="<?php echo SERVER_URL; ?>static/images/products/1.jpg" class="img-fluid rounded-top mx-auto d-block" alt="work-thumbnail">
-                                <div class="product-overlay">
-                                    <ul class="list-inline product-links social-links mb-0">
-                                        <li class="list-inline-item">
-                                            <a href="#" id="add_cart" data-toggle="tooltip" data-id="<?php echo Main::Encryption($producto['id']); ?>" data-placement="top" title="Agregar al carrito"><i class="dripicons-cart"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <img src="<?php echo SERVER_URL.$producto['imagen']; ?>" class="img-fluid rounded-top mx-auto d-block img-product-thumbail" alt="work-thumbnail">
+                                <?php if (isset($_SESSION['nombres'])) { ?>
+                                    <div class="product-overlay">
+                                        <ul class="list-inline product-links social-links mb-0">
+                                            <li class="list-inline-item">
+                                                    <a href="#" id="add_cart" data-toggle="tooltip" data-id="<?php echo Main::Encryption($producto['id']); ?>" data-placement="top" title="Agregar al carrito"><i class="dripicons-cart"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                <?php } ?>
                             </div>
                             
                             <div class="detail mt-3">
-                                <h4 class="font-16"><a href="index.php?page=producto&id=<?php echo Main::Encryption($producto['id']); ?>" class="text-dark"><?php echo $producto['titulo']; ?></a> </h4>
+                                <h4 class="font-16" style="height: 38px;"><a href="index.php?page=producto&id=<?php echo Main::Encryption($producto['id']); ?>" class="text-dark"><?php echo $producto['nombre']; ?></a> </h4>
                                 <p class="text-muted">
                                     <i class="mdi mdi-star text-warning"></i>
                                     <i class="mdi mdi-star text-warning"></i>

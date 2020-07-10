@@ -1,3 +1,11 @@
+<?php 
+	require_once './controllers/pedidoController.php';
+
+	$ordenes = new PedidosController();
+
+	$pedidos = $ordenes->get_orders($_SESSION['id']);
+	// var_dump($pedidos);
+?>
 <div class="wrapper">
 	<div class="container-fluid">
 		<div class="row">
@@ -9,22 +17,20 @@
                                 <thead>
 	                                <tr>
 	                                    <th>Estado</th>
-	                                    <th>Total</th>
+	                                    <th>Total con envío</th>
 	                                    <th>Direccion</th>
 	                                    <th>Metodo de pago</th>
-	                                    <!-- <th></th>  -->
 	                                </tr>
                                 </thead>
                                 <tbody>
-	                                <tr>
-	                                    <td>Completada</td>
-	                                    <td><?php echo MONEY; ?>521</td>
-	                                    <td>Colonia Escalón, Casa #526, San Salvador</td>
-	                                    <td>**** **** **** 0000</td>
-	                                    <!-- <td>
-	                                        <a href="#" class="btn btn-warning"><i class="far fa-eye"></i></a>
-	                                    </td> -->
-	                                </tr>
+                                	<?php foreach ($pedidos as $pedido) { ?>
+		                                <tr>
+		                                    <td><?php echo $pedido['estado']; ?></td>
+		                                    <td><?php echo MONEY.($pedido['total'] + $pedido['total_envio']); ?></td>
+		                                    <td><?php echo $pedido['linea1'].', '.$pedido['municipio'].', '.$pedido['departamento'] ?></td>
+		                                    <td>**** **** **** <?php echo $pedido['ultimos4']; ?></td>
+		                                </tr>
+	                            	<?php } ?>
                                 </tbody>
                             </table>
                         </div>

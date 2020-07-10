@@ -1,3 +1,8 @@
+<?php 
+    if (!isset($_SESSION['nombres'])) {
+        echo '<script>window.location.href = "index.php"</script>';   
+    } 
+?>
 <div class="wrapper">
     <div class="container-fluid">                
         <div class="row">
@@ -15,26 +20,50 @@
 	                                <tr>
 	                                    <th>Imagen</th>
 	                                    <th>Producto</th>
-	                                    <th>Cantidad</th>
 	                                    <th>Precio</th>
+                                        <th>Cantidad</th>
+	                                    <th>Subtotal</th>
 	                                    <th></th> 
 	                                </tr>
                                 </thead>
-                                <tbody>
-	                                <tr>
-	                                    <td class="product-list-img">
-	                                        <img src="static/images/products/1.jpg" class="img-fluid thumb-md rounded" alt="tbl">
-	                                    </td>
-	                                    <td>
-	                                        <h6 class="mt-0 mb-1">Producto 1</h6>
-	                                        <p class="m-0 font-14">Descripcion del producto 1.</p>
-	                                    </td>
-	                                    <td>5</td>
-	                                    <td><?php echo MONEY; ?>521</td>
-	                                    <td>
-	                                        <a href="javascript:void(0);" class="text-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Remover producto"><i class="mdi mdi-close font-18"></i></a>
-	                                    </td>
-	                                </tr>
+                                <tbody id="carrito">
+                                    <?php
+                                        require_once 'controllers/pedidoController.php';
+
+                                        $orden = new PedidosController();
+                                        $productos = $orden->get_carrito_controller($_SESSION['id']);
+
+                                        // var_dump($productos);
+                                        if (!empty($productos)) {
+                                            foreach ($productos as $producto) { 
+                                    ?>
+    	                                <tr>
+    	                                    <td class="product-list-img">
+    	                                        <img src="<?php echo SERVER_URL.$producto['imagen']; ?>" class="img-fluid thumb-md rounded" alt="tbl" width="48" height="48">
+    	                                    </td>
+    	                                    <td>
+    	                                        <h6 class="mt-0 mb-1"><?php echo $producto['nombre']; ?></h6>
+    	                                        <p class="m-0 font-14"><?php echo $producto['descripcion']; ?></p>
+    	                                    </td>
+    	                                    <td><?php echo MONEY.$producto['precio'] ?></td>
+                                            <td><?php echo $producto['cantidad']; ?></td>
+    	                                    <td><?php echo MONEY.$producto['precio'] * $producto['cantidad']; ?></td>
+    	                                    <td>
+    	                                        <a id="remove" class="text-danger remove-cart-product" data-toggle="tooltip" data-placement="top" title="" data-original-title="Remover producto" data-action="remove_product" data-order="<?php echo $producto['pedido']; ?>" data-price="<?php echo $producto['precio']; ?>" data-quantity="<?php echo $producto['cantidad']; ?>" data-product="<?php echo $producto['producto_id']; ?>" style="cursor: pointer;">
+                                                    <i class="mdi mdi-close font-18"></i>
+                                                </a>
+    	                                    </td>
+    	                                </tr>
+                                    <?php 
+                                            }
+                                        } else {
+                                    ?>
+                                        <tr>
+                                            <td class="text-center" colspan="6">
+                                                No has agregado ningun producto al carrito
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>
@@ -43,7 +72,6 @@
             </div>
         </div>
         <!-- end row -->
-
     </div>
     <!-- end container-fluid -->
 </div>
