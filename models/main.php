@@ -39,7 +39,7 @@
 		}
 
 		/*--------- Desencriptado ---------*/
-		protected static function Decryption($string)
+		public static function Decryption($string)
 		{
 			try {
 				$key = hash('sha256', SECRET_KEY);
