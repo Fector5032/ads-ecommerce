@@ -19,5 +19,18 @@
 				die($e->getMessage());
 			}
 		}
+
+		public function ver_producto($producto)
+		{
+			try {
+				$producto = ProductosModel::Decryption($producto);
+
+				$info = ProductosModel::get_producto_details($producto);
+				// var_dump($info);
+				return $info;
+			} catch (Exception $e) {
+				die($e->getMessage());
+			}
+		}
 	}
 ?>
